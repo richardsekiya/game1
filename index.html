@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/sekiya123/Downloads/game/game.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Kids Click Game</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background-image: url("2-2_AdobeStock_200822772-1024x683.jpeg");
+    background-size: cover;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+
+  /* �^�C�g���摜�̐ݒ� */
+  .title-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+  }
+
+  .title-image {
+    width: 100%;       /* ���������ς��ɍL����ꍇ */
+    max-width: 800px;  /* �傫�����Ȃ��悤�ɐ����i���D�݂Œ������Ă��������j */
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* ���������オ�点��e */
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  img.child {
+    position: absolute;
+    width: 120px;
+    cursor: pointer;
+    z-index: 5; /* �^�C�g����艺�ɕ\�� */
+    transition:
+      transform 0.6s ease,
+      left 0.6s ease,
+      top 0.6s ease,
+      width 0.3s ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="title-container">
+  <img src="./index_files/Title bar.jpg" alt="�q�������N���b�N�Q�[��" class="title-image">
+</div>
+
+<img src="./index_files/Layla.jpeg" class="child" style="left: 54.5776%; top: 80.0487%;">
+<img src="./index_files/Minato.jpg" class="child" style="left: 33.9253%; top: 19.5912%;">
+<img src="./index_files/Soma.jpg" class="child" style="left: 72.5345%; top: 26.2345%;">
+<img src="./index_files/Zion.jpg" class="child" style="left: 54.8001%; top: 76.3638%;">
+
+<script>
+/* ===== ���ʉ� ===== */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "triangle";
+  osc.frequency.value = 650;
+  gain.gain.value = 0.2;
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.2);
+}
+
+/* ===== �L�����N�^�[���� ===== */
+const children = document.querySelectorAll(".child");
+
+function randomPosition(img) {
+  // �^�C�g���o�[�ɏd�Ȃ�ɂ������邽�߁A�������ɔz�u�����悤����
+  img.style.left = Math.random() * 80 + "%";
+  img.style.top  = (Math.random() * 70 + 15) + "%"; 
+}
+
+children.forEach(img => {
+  randomPosition(img);
+
+  img.onclick = () => {
+    playSound();
+    img.style.transform = "rotate(360deg)";
+    img.style.width = "150px";
+    randomPosition(img);
+
+    setTimeout(() => {
+      img.style.transform = "rotate(0deg)";
+      img.style.width = "120px";
+    }, 600);
+  };
+});
+</script>
+
+
+</body></html>
