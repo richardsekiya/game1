@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kids Click Game</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background-image: url("2-2_AdobeStock_200822772-1024x683.jpeg");
+    background-size: cover;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+
+  /* タイトル画像の設定 */
+  .title-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+  }
+
+  .title-image {
+    width: 100%;       /* 横幅いっぱいに広げる場合 */
+    max-width: 800px;  /* 大きすぎないように制限（お好みで調整してください） */
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 少し浮き上がらせる影 */
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  img.child {
+    position: absolute;
+    width: 120px;
+    cursor: pointer;
+    z-index: 5; /* タイトルより下に表示 */
+    transition:
+      transform 0.6s ease,
+      left 0.6s ease,
+      top 0.6s ease,
+      width 0.3s ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="title-container">
+  <img src="Title bar.jpg" alt="子供たちクリックゲーム" class="title-image">
+</div>
+
+<img src="Layla.jpeg" class="child">
+<img src="Minato.jpg" class="child">
+<img src="Soma.jpg"   class="child">
+<img src="Zion.jpg"   class="child">
+
+<script>
+/* ===== 効果音 ===== */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "triangle";
+  osc.frequency.value = 650;
+  gain.gain.value = 0.2;
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.2);
+}
+
+/* ===== キャラクター動作 ===== */
+const children = document.querySelectorAll(".child");
+
+function randomPosition(img) {
+  // タイトルバーに重なりにくくするため、少し下に配置されるよう調整
+  img.style.left = Math.random() * 80 + "%";
+  img.style.top  = (Math.random() * 70 + 15) + "%"; 
+}
+
+children.forEach(img => {
+  randomPosition(img);
+
+  img.onclick = () => {
+    playSound();
+    img.style.transform = "rotate(360deg)";
+    img.style.width = "150px";
+    randomPosition(img);
+
+    setTimeout(() => {
+      img.style.transform = "rotate(0deg)";
+      img.style.width = "120px";
+    }, 600);
+  };
+});
+</script>
+
+</body>
+</html>
